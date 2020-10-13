@@ -32,6 +32,8 @@ public class Room : MonoBehaviour
 	public List<Wall> walls = new List<Wall>();
 	public List<Room> multiRoom = new List<Room>();
 
+	private Scene initialScene;
+
 	private void OnDrawGizmos/*Selected*/()
 	{
 		Gizmos.color = Color.red;
@@ -48,6 +50,8 @@ public class Room : MonoBehaviour
 
 	private void Start()
 	{
+		initialScene = gameObject.scene;
+
 		if (RoomController.Instance == null)
 		{
 			Debug.LogWarning("This scene contains this room only, it's likely you played the wrong scene.");
@@ -97,18 +101,18 @@ public class Room : MonoBehaviour
 
 	private void BuildMultiRoom()
 	{
-		LevelGenerator.spawnedRoomCount -= multiRoom.Count;
+		LevelGenerator.spawnedRoomCount -= multiRoom.Count - 1;
 
 		List<Vector2> coords = new List<Vector2>();
 
 		foreach (var rm in multiRoom)
 		{
 			coords.Add(rm.Coordinates);
-			RoomController.Instance.loadedRooms.Remove(rm);
+			RoomController.loadedRooms.Remove(rm);
 
 			if (rm != this)
 			{
-				//SceneManager.UnloadSceneAsync(rm.gameObject.scene);
+				SceneManager.UnloadSceneAsync(rm.initialScene);
 				Destroy(rm.gameObject);
 			}
 		}
@@ -121,7 +125,7 @@ public class Room : MonoBehaviour
 			}
 			else
 			{
-				RoomController.Instance.LoadRoom("Empty 2x1", new Vector2(coords[0].y, (coords[0].x + coords[1].x) / 2));
+				RoomController.Instance.LoadRoom("Empty 2x1", new Vector2((coords[0].x + coords[1].x) / 2, coords[0].y));
 			}
 		}
 		else if (coords.Count == 4)
@@ -133,8 +137,7 @@ public class Room : MonoBehaviour
 			RoomController.Instance.LoadRoom("Empty 2x2", c);
 		}
 
-
-		//SceneManager.UnloadSceneAsync(gameObject.scene);
+		SceneManager.UnloadSceneAsync(initialScene);
 		Destroy(gameObject);
 	}
 
@@ -231,7 +234,7 @@ public class Room : MonoBehaviour
 			switch (d.doorSide)
 			{
 				case DoorSide.Top:
-					if (GetOffsetRoom(Vector2.up * new Vector2(RoomController.roomX, RoomController.roomY)) == null)
+					if (!RoomController.Check4Room(d.transform.localPosition + new Vector3(0f, 5f, 0f)))
 					{
 						doors2Remove.Add(d);
 						d.PatchHorizontalDoor();
@@ -239,7 +242,7 @@ public class Room : MonoBehaviour
 					break;
 
 				case DoorSide.Bottom:
-					if (GetOffsetRoom(Vector2.down * new Vector2(RoomController.roomX, RoomController.roomY)) == null)
+					if (!RoomController.Check4Room(d.transform.localPosition + new Vector3(0f, -5f, 0f)))
 					{
 						doors2Remove.Add(d);
 						d.PatchHorizontalDoor();
@@ -247,7 +250,7 @@ public class Room : MonoBehaviour
 					break;
 
 				case DoorSide.Left:
-					if (GetOffsetRoom(Vector2.left * new Vector2(RoomController.roomX, RoomController.roomY)) == null)
+					if (!RoomController.Check4Room(d.transform.localPosition + new Vector3(-5f, 0f, 0f)))
 					{
 						doors2Remove.Add(d);
 						d.PatchVerticalDoor();
@@ -255,7 +258,7 @@ public class Room : MonoBehaviour
 					break;
 
 				case DoorSide.Right:
-					if (GetOffsetRoom(Vector2.right * new Vector2(RoomController.roomX, RoomController.roomY)) == null)
+					if (!RoomController.Check4Room(d.transform.localPosition + new Vector3(5f, 0f, 0f)))
 					{
 						doors2Remove.Add(d);
 						d.PatchVerticalDoor();
@@ -272,7 +275,7 @@ public class Room : MonoBehaviour
 
 	public Room GetOffsetRoom(Vector3 _offset)
 	{
-		return RoomController.Instance.GetRoom(transform.position + _offset);
+		return RoomController.GetRoom(transform.position + _offset);
 	}
 
 	public Vector3 GetRoomCenter()

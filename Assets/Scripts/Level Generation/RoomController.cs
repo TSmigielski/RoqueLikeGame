@@ -25,7 +25,7 @@ public class RoomController : MonoBehaviour
 	private RoomInfo currentLoadRoomData;
 	private Room currentRoom;
 	private Queue<RoomInfo> loadRoomQueue = new Queue<RoomInfo>();
-	public List<Room> loadedRooms = new List<Room>();
+	public static List<Room> loadedRooms = new List<Room>();
 	private bool isLoadingRoom = false, roomModDone = false;
 
 	public static bool LevelRoomsDone { get; private set; }
@@ -44,11 +44,6 @@ public class RoomController : MonoBehaviour
 
 	private void Update()
 	{
-		UpdateRoomQueue();
-	}
-
-	private void UpdateRoomQueue()
-	{
 		if (loadedRooms.Count == LevelGenerator.spawnedRoomCount)
 		{
 			LevelRoomsDone = true;
@@ -60,10 +55,10 @@ public class RoomController : MonoBehaviour
 					loadedRooms[i].ModifyRoom();
 				}
 
-				//foreach (var rm in loadedRooms)
-				//{
-				//	rm.RemoveUnconnectedDoors();
-				//}
+				foreach (var rm in loadedRooms)
+				{
+					rm.RemoveUnconnectedDoors();
+				}
 
 				roomModDone = true;
 			}
@@ -118,26 +113,24 @@ public class RoomController : MonoBehaviour
 		isLoadingRoom = false;
 	}
 
-	public bool Check4Room(Vector3 _position)
+	public static bool Check4Room(Vector3 _position)
 	{
 		foreach (var cl in Physics2D.OverlapPointAll(_position))
 		{
-			Debug.Log("xd");
-			if (cl.CompareTag("Room"))
+			if (cl.CompareTag("Room") && loadedRooms.Contains(cl.GetComponent<Room>()))
 			{
-				return cl.GetComponent<Room>() != null;
+				return true;
 			}
 		}
 
 		return false;
 	}
 
-	public Room GetRoom(Vector3 _position)
+	public static Room GetRoom(Vector3 _position)
 	{
 		foreach (var cl in Physics2D.OverlapPointAll(_position))
 		{
-			Debug.Log("xd");
-			if (cl.CompareTag("Room"))
+			if (cl.CompareTag("Room") && loadedRooms.Contains(cl.GetComponent<Room>()))
 			{
 				return cl.GetComponent<Room>();
 			}
