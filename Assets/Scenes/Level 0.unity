@@ -153,8 +153,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _myCharacter: {fileID: 11400000, guid: 7d5c993f3017ff949b978ff74fd467fb, type: 2}
-  doubleRoomChance: 20
-  quadrupleRoomChance: 10
+  doubleRoomChance: 10
+  quadrupleRoomChance: 25
 --- !u!4 &30304895
 Transform:
   m_ObjectHideFlags: 0
@@ -199,7 +199,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4488bb68aa5280e4b8dbae72c44218c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  loadedRooms: []
 --- !u!4 &607084932
 Transform:
   m_ObjectHideFlags: 0

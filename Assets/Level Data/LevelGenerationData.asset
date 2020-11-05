@@ -13,4 +13,6 @@ MonoBehaviour:
   m_Name: LevelGenerationData
   m_EditorClassIdentifier: 
   numberOfCrawlers: 3
-  iterationMinMax: {x: 7, y: 14}
+  iterationMinMax: {x: 6, y: 12}
+  doubleRoomChance: 10
+  quadrupleRoomChance: 25

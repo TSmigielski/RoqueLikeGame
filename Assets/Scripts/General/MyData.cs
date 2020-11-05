@@ -13,10 +13,6 @@ public class MyData : MonoBehaviour
 		set { _myCharacter = value; }
 	}
 
-	[Range(0f, 100f)] public float doubleRoomChance = 10f;
-	[Range(0f, 100f)] public float quadrupleRoomChance = 60f;
-
-
 	private void Awake()
 	{
 		if (Instance == null)

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class RoomInfo
@@ -26,9 +27,11 @@ public class RoomController : MonoBehaviour
 	private Room currentRoom;
 	private Queue<RoomInfo> loadRoomQueue = new Queue<RoomInfo>();
 	public static List<Room> loadedRooms = new List<Room>();
-	private bool isLoadingRoom = false, roomModDone = false;
+	private bool isLoadingRoom = false, isModifyingRoom = false;
+	public static List<Room> rooms2Destroy = new List<Room>();
 
-	public static bool LevelRoomsDone { get; private set; }
+	public static bool AllRoomsReady { get; private set; }
+
 
 	private void Awake()
 	{
@@ -44,34 +47,51 @@ public class RoomController : MonoBehaviour
 
 	private void Update()
 	{
-		if (loadedRooms.Count == LevelGenerator.spawnedRoomCount)
-		{
-			LevelRoomsDone = true;
-
-			if (!roomModDone)
-			{
-				for (int i = loadedRooms.Count - 1; i > 0; i--)
-				{
-					loadedRooms[i].ModifyRoom();
-				}
-
-				foreach (var rm in loadedRooms)
-				{
-					rm.RemoveUnconnectedDoors();
-				}
-
-				roomModDone = true;
-			}
-		}
+		if (!AllRoomsReady && !isModifyingRoom)
+			StartCoroutine(ModifyRooms());
 
 		if (isLoadingRoom || loadRoomQueue.Count == 0)
 		{
 			return;
 		}
 
-		currentLoadRoomData = loadRoomQueue.Dequeue();
 		isLoadingRoom = true;
+		currentLoadRoomData = loadRoomQueue.Dequeue();
 		StartCoroutine(LoadRoomRoutine(currentLoadRoomData));
+	}
+
+	private IEnumerator ModifyRooms()
+	{
+		if (loadedRooms.Count == LevelGenerator.spawnedRoomCount)
+		{
+			isModifyingRoom = true;
+			yield return new WaitForSeconds(.5f);
+
+			if (loadedRooms.Count != LevelGenerator.spawnedRoomCount)
+				yield break;
+
+			AllRoomsReady = true;
+
+			for (int i = loadedRooms.Count - 1; i > 0; i--)
+			{
+				loadedRooms[i].ModifyRoom();
+			}
+
+			yield return new WaitForSeconds(1f);
+
+			foreach (var rm in rooms2Destroy)
+			{
+				loadedRooms.Remove(rm);
+				SceneManager.UnloadSceneAsync(rm.initialScene);
+				Destroy(rm.gameObject);
+			}
+
+			foreach (var rm in loadedRooms)
+			{
+				rm.RemoveUnconnectedDoors();
+			}
+		}
+		isModifyingRoom = false;
 	}
 
 	public void LoadRoom(string _name, Vector2 _coordinates)
@@ -141,7 +161,7 @@ public class RoomController : MonoBehaviour
 
 	public void OnPlayerEnterRoom(Room _room)
 	{
-		if (!LevelRoomsDone)
+		if (!AllRoomsReady)
 		{
 			return;
 		}

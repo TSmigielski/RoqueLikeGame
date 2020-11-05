@@ -4,10 +4,20 @@ using UnityEngine;
 
 public class LevelGenerator : MonoBehaviour
 {
+	public static LevelGenerator Instance { get; private set; }
+
 	public LevelGenerationData levelGenerationData;
 	private List<Vector2Int> levelRooms;
 
 	public static int spawnedRoomCount;
+
+	private void Awake()
+	{
+		if (Instance == null)
+			Instance = this;
+		else
+			Destroy(gameObject);
+	}
 
 	private void Start()
 	{

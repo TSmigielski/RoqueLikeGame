@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public enum RoomType { Start, Empty, Multi }
+public enum RoomType { Start, Empty, Multi, Destroyed }
 
 public class Room : MonoBehaviour
 {
@@ -32,7 +32,7 @@ public class Room : MonoBehaviour
 	public List<Wall> walls = new List<Wall>();
 	public List<Room> multiRoom = new List<Room>();
 
-	private Scene initialScene;
+	[HideInInspector] public Scene initialScene;
 
 	private void OnDrawGizmos/*Selected*/()
 	{
@@ -84,11 +84,11 @@ public class Room : MonoBehaviour
 			return;
 		}
 
-		if (multiRoom.Count == 4 && Random.Range(0f, 100f) < MyData.Instance.quadrupleRoomChance)
+		if (multiRoom.Count == 4 && Random.Range(0f, 100f) < LevelGenerator.Instance.levelGenerationData.quadrupleRoomChance)
 		{
 			BuildMultiRoom();
 		}
-		else if (multiRoom.Count == 2 && Random.Range(0f, 100f) < MyData.Instance.doubleRoomChance)
+		else if (multiRoom.Count == 2 && Random.Range(0f, 100f) < LevelGenerator.Instance.levelGenerationData.doubleRoomChance)
 		{
 			BuildMultiRoom();
 		}
@@ -101,20 +101,15 @@ public class Room : MonoBehaviour
 
 	private void BuildMultiRoom()
 	{
-		LevelGenerator.spawnedRoomCount -= multiRoom.Count - 1;
+		LevelGenerator.spawnedRoomCount -= (multiRoom.Count - 1);
 
 		List<Vector2> coords = new List<Vector2>();
 
 		foreach (var rm in multiRoom)
 		{
 			coords.Add(rm.Coordinates);
-			RoomController.loadedRooms.Remove(rm);
-
-			if (rm != this)
-			{
-				SceneManager.UnloadSceneAsync(rm.initialScene);
-				Destroy(rm.gameObject);
-			}
+			RoomController.rooms2Destroy.Add(rm);
+			rm.Room_Type = RoomType.Destroyed;
 		}
 
 		if (coords.Count == 2)
@@ -136,9 +131,6 @@ public class Room : MonoBehaviour
 
 			RoomController.Instance.LoadRoom("Empty 2x2", c);
 		}
-
-		SceneManager.UnloadSceneAsync(initialScene);
-		Destroy(gameObject);
 	}
 
 	private List<Room> MultiRoomCheck()
@@ -234,7 +226,7 @@ public class Room : MonoBehaviour
 			switch (d.doorSide)
 			{
 				case DoorSide.Top:
-					if (!RoomController.Check4Room(d.transform.localPosition + new Vector3(0f, 5f, 0f)))
+					if (!RoomController.Check4Room(d.transform.position + new Vector3(0f, 5f, 0f)))
 					{
 						doors2Remove.Add(d);
 						d.PatchHorizontalDoor();
@@ -242,7 +234,7 @@ public class Room : MonoBehaviour
 					break;
 
 				case DoorSide.Bottom:
-					if (!RoomController.Check4Room(d.transform.localPosition + new Vector3(0f, -5f, 0f)))
+					if (!RoomController.Check4Room(d.transform.position + new Vector3(0f, -5f, 0f)))
 					{
 						doors2Remove.Add(d);
 						d.PatchHorizontalDoor();
@@ -250,7 +242,7 @@ public class Room : MonoBehaviour
 					break;
 
 				case DoorSide.Left:
-					if (!RoomController.Check4Room(d.transform.localPosition + new Vector3(-5f, 0f, 0f)))
+					if (!RoomController.Check4Room(d.transform.position + new Vector3(-5f, 0f, 0f)))
 					{
 						doors2Remove.Add(d);
 						d.PatchVerticalDoor();
@@ -258,7 +250,7 @@ public class Room : MonoBehaviour
 					break;
 
 				case DoorSide.Right:
-					if (!RoomController.Check4Room(d.transform.localPosition + new Vector3(5f, 0f, 0f)))
+					if (!RoomController.Check4Room(d.transform.position + new Vector3(5f, 0f, 0f)))
 					{
 						doors2Remove.Add(d);
 						d.PatchVerticalDoor();
