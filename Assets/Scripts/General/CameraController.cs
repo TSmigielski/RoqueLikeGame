@@ -7,12 +7,6 @@ public class CameraController : MonoBehaviour
 {
 	public static CameraController Instance { get; private set; }
 	public static Camera MainCamera { get; private set; }
-	[SerializeField] private Room _room;
-	public Room MyRoom
-	{
-		get { return _room; }
-		set { _room = value; timer = 0f; }
-	}
 
 	public Transform target;
 	public float baseSpeed;
@@ -41,7 +35,7 @@ public class CameraController : MonoBehaviour
 		}
 		else
 		{
-			actualSpeed = 18f;
+			actualSpeed = 19f;
 		}
 
 		UpdatePosition();
@@ -49,14 +43,18 @@ public class CameraController : MonoBehaviour
 
 	private void UpdatePosition()
 	{
-		if (target == null || MyRoom == null)
+		var myR = PlayerController.MyRoom;
+
+		if (target == null || myR == null)
 			return;
 
 		var newPos = target.position;
 		newPos.z = transform.position.z;
+		var camSize = MainCamera.orthographicSize;
+		var aspect = MainCamera.aspect;
 
-		newPos.x = Mathf.Clamp(newPos.x, MyRoom.GetRoomCenter().x - (MyRoom.Dimension.x / 3.95f), MyRoom.GetRoomCenter().x + (MyRoom.Dimension.x / 3.95f));
-		newPos.y = Mathf.Clamp(newPos.y, MyRoom.GetRoomCenter().y - (MyRoom.Dimension.y / 4f), MyRoom.GetRoomCenter().y + (MyRoom.Dimension.y / 4f));
+		newPos.x = Mathf.Clamp(newPos.x, myR.transform.position.x - (myR.Dimension.x / 2) + camSize * aspect, myR.transform.position.x + (myR.Dimension.x / 2) - camSize * aspect);
+		newPos.y = Mathf.Clamp(newPos.y, myR.transform.position.y - (myR.Dimension.y / 2) + camSize, myR.transform.position.y + (myR.Dimension.y / 2) - camSize);
 
 		transform.position = Vector3.Lerp(transform.position, newPos, actualSpeed * Time.deltaTime);
 	}

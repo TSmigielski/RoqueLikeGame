@@ -24,7 +24,6 @@ public class RoomController : MonoBehaviour
 
 	private string currentWorldName = "Level 0";
 	private RoomInfo currentLoadRoomData;
-	private Room currentRoom;
 	private Queue<RoomInfo> loadRoomQueue = new Queue<RoomInfo>();
 	public static List<Room> loadedRooms = new List<Room>();
 	private bool isLoadingRoom = false, isModifyingRoom = false;
@@ -161,11 +160,16 @@ public class RoomController : MonoBehaviour
 
 	public void OnPlayerEnterRoom(Room _room)
 	{
-		if (!AllRoomsReady)
+		if (!AllRoomsReady && _room.Room_Type != RoomType.Start)
 		{
 			return;
 		}
-		currentRoom = _room;
-		CameraController.Instance.MyRoom = _room;
+		PlayerController.MyRoom = _room;
+		MinimapController.Instance.UpdateMinimap();
+
+		if (!PlayerController.VisitedRooms.Contains(_room))
+		{
+			PlayerController.VisitedRooms.Add(_room);
+		}
 	}
 }

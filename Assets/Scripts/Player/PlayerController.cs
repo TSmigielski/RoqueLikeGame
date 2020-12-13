@@ -70,8 +70,10 @@ public class PlayerController : MonoBehaviour, IMoveSpeed
 	}
 	#endregion
 
-	[Header("Other")]
+	public static List<Room> VisitedRooms { get; set; }
+	public static Room MyRoom { get; set; }
 
+	[Header("Other")]
 	public Animator animator;
 	public Transform legs, body, head;
 	public float maxBodyRotation = 30f, maxHeadRotation = 80f;
@@ -81,6 +83,7 @@ public class PlayerController : MonoBehaviour, IMoveSpeed
 	private void Awake()
 	{
 		movement = GetComponent<HandleMovement>();
+		VisitedRooms = new List<Room>();
 	}
 
 	private void Start()

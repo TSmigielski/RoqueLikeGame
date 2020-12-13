@@ -34,6 +34,13 @@ public class Room : MonoBehaviour
 
 	[HideInInspector] public Scene initialScene;
 
+	private MinimapRoom _myMMRoom;
+	public MinimapRoom MyMMRoom
+	{
+		get { return _myMMRoom; }
+		set { _myMMRoom = value; value.MyRoom = this; }
+	}
+
 	private void OnDrawGizmos/*Selected*/()
 	{
 		Gizmos.color = Color.red;
@@ -60,7 +67,7 @@ public class Room : MonoBehaviour
 
 		if (Room_Type == RoomType.Start)
 		{
-			CameraController.Instance.MyRoom = this;
+			RoomController.Instance.OnPlayerEnterRoom(this);
 		}
 
 		foreach (var d in GetComponentsInChildren<Door>())
@@ -268,10 +275,5 @@ public class Room : MonoBehaviour
 	public Room GetOffsetRoom(Vector3 _offset)
 	{
 		return RoomController.GetRoom(transform.position + _offset);
-	}
-
-	public Vector3 GetRoomCenter()
-	{
-		return new Vector3(Coordinates.x * Dimension.x, Coordinates.y * Dimension.y);
 	}
 }
