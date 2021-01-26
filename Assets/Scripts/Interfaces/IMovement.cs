@@ -1,11 +1,14 @@
 ﻿using UnityEngine;
 
-public interface IMoveDirection
+public interface IEntityDirections
 {
-	Vector2 MoveDirection { get; }
+	Vector2 WalkDirection { get; }
+	Quaternion LookDirection { get; }
 }
 
-public interface IMoveSpeed
+public interface IEntityInformation
 {
 	int Speed { get; }
+	Transform Body { get; }
+	Transform Legs { get; }
 }
