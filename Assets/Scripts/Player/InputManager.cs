@@ -30,10 +30,6 @@ public class InputManager : MonoBehaviour, IEntityDirections
 		controls.Enable();
 		controls.Player.Movement.performed += OnMoveInput;
 		controls.Player.LookDirection.performed += OnLookInput;
-
-#if (UNITY_STANDALONE)
-		controls.Player.MousePosition.performed += OnMouseInput;
-#endif
 	}
 
 	private void OnDisable()
@@ -41,7 +37,11 @@ public class InputManager : MonoBehaviour, IEntityDirections
 		controls.Disable();
 		controls.Player.Movement.performed -= OnMoveInput;
 		controls.Player.LookDirection.performed -= OnLookInput;
-		controls.Player.MousePosition.performed -= OnMouseInput;
+	}
+
+	private void Update()
+	{
+		LookDirection = CalculateLookDirection(controls.Player.MousePosition.ReadValue<Vector2>()); // TODO - switch between mouse and other input
 	}
 
 	private void OnMoveInput(InputAction.CallbackContext ctx)
@@ -64,8 +64,13 @@ public class InputManager : MonoBehaviour, IEntityDirections
 
 	private void OnMouseInput(InputAction.CallbackContext ctx)
 	{
-		Vector2 mouseDir = Camera.main.ScreenToWorldPoint(ctx.ReadValue<Vector2>()) - transform.position;
-		float angle = Mathf.Atan2(mouseDir.y, mouseDir.x) * Mathf.Rad2Deg;
-		LookDirection = Quaternion.Euler(0, 0, angle);
+		LookDirection = CalculateLookDirection(ctx.ReadValue<Vector2>());
+	}
+
+	private Quaternion CalculateLookDirection(Vector2 direction)
+	{
+		Vector2 lookDirection = Camera.main.ScreenToWorldPoint(direction) - transform.position;
+		float angle = Mathf.Atan2(lookDirection.y, lookDirection.x) * Mathf.Rad2Deg;
+		return Quaternion.Euler(0, 0, angle);
 	}
 }
