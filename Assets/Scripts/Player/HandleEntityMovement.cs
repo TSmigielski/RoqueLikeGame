@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-[RequireComponent(typeof(IEntityDirections))]
-[RequireComponent(typeof(IEntityInformation))]
-public class HandleDirections : MonoBehaviour
+[RequireComponent(typeof(IEntityControls))]
+[RequireComponent(typeof(IEntity))]
+public class HandleEntityMovement : MonoBehaviour
 {
-	IEntityDirections controller;
-	IEntityInformation myEntity;
+	IEntity myEntity;
+	IEntityControls myEntityController;
 	Rigidbody2D rb;
 
 	public Vector2 Velocity { get; private set; }
@@ -14,13 +14,13 @@ public class HandleDirections : MonoBehaviour
 	private void Awake()
 	{
 		rb = GetComponent<Rigidbody2D>();
-		controller = GetComponent<IEntityDirections>();
-		myEntity = GetComponent<IEntityInformation>();
+		myEntity = GetComponent<IEntity>();
+		myEntityController = GetComponent<IEntityControls>();
 	}
 
 	void FixedUpdate()
 	{
-		rb.AddForce(controller.WalkDirection * (myEntity.Speed * 333) * Time.fixedDeltaTime);
+		rb.AddForce(myEntityController.WalkVector * (myEntity.Speed * 333) * Time.fixedDeltaTime);
 	}
 
 	private void Update()
@@ -28,7 +28,7 @@ public class HandleDirections : MonoBehaviour
 		float angle = Mathf.Atan2(Velocity.y, Velocity.x) * Mathf.Rad2Deg;
 		myEntity.Legs.rotation = Quaternion.Euler(0, 0, angle);
 
-		myEntity.Body.rotation = controller.LookDirection;
+		myEntity.Body.rotation = myEntityController.LookVector;
 	}
 
 	private void LateUpdate()

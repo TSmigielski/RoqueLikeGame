@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour, IEntityInformation
+public class PlayerController : MonoBehaviour, IEntity
 {
+	// Every mid-game change-able property
 	#region Stats
 	[Header("Stats")]
 	[SerializeField] private string _firstName;
@@ -70,6 +71,7 @@ public class PlayerController : MonoBehaviour, IEntityInformation
 	}
 	#endregion
 
+	// Every property that will not change
 	#region Static Entity Information
 	[Header("Static Information")]
 	[SerializeField] private Transform _body;
@@ -86,18 +88,17 @@ public class PlayerController : MonoBehaviour, IEntityInformation
 	}
 	#endregion
 
-	public static List<Room> VisitedRooms { get; set; }
-	public static Room MyRoom { get; set; }
+	public static List<Room> VisitedRooms { get; set; } // List of every room visited by the player
+	public static Room CurrentRoom { get; set; } // The room the player is in right now
 
 	[Header("Other")]
-	public Animator animator;
-	HandleDirections directions;
-	Vector2 velocity;
+	public Animator animator; // Animations controller
+	HandleEntityMovement handleMovement; // This script handles/controls the movement
 
 	private void Awake()
 	{
-		directions = GetComponent<HandleDirections>();
-		VisitedRooms = new List<Room>();
+		handleMovement = GetComponent<HandleEntityMovement>();
+		VisitedRooms = new List<Room>(); // Initialize the list
 	}
 
 	private void Start()
@@ -107,13 +108,16 @@ public class PlayerController : MonoBehaviour, IEntityInformation
 
 	private void Update()
 	{
-		velocity = directions.Velocity;
-
-		animator.SetFloat("VelocityMag", velocity.magnitude);
-		animator.SetFloat("Walk Speed", velocity.magnitude / 5f);
+		HandleAnimations();
 	}
 
-	public void InitializeCharacter()
+	private void HandleAnimations()
+	{
+		animator.SetFloat("VelocityMag", handleMovement.Velocity.magnitude); 
+		animator.SetFloat("Walk Speed", handleMovement.Velocity.magnitude / 5f);
+	}
+
+	private void InitializeCharacter() //Takes values from chosen character that is stored in MyData singleton and puts it in the undeclared variables of this script
 	{
 		FirstName = MyData.Instance.MyCharacter.firstName;
 		LastName = MyData.Instance.MyCharacter.lastName;

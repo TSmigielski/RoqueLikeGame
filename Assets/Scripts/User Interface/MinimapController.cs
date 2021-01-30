@@ -19,7 +19,7 @@ public class MinimapController : MonoBehaviour
 
 	public void UpdateMinimap()
 	{
-		var myR = PlayerController.MyRoom;
+		var myR = PlayerController.CurrentRoom;
 
 		if (myR.MyMMRoom != null)
 		{

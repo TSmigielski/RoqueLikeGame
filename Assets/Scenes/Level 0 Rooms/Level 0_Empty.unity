@@ -520,6 +520,10 @@ PrefabInstance:
       propertyPath: walls
       value: 
       objectReference: {fileID: 1313400418}
+    - target: {fileID: 8608919979575373581, guid: dcc7775df23c61c41bf92b42d6d4dccb, type: 3}
+      propertyPath: doorSide
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 8608919979575373586, guid: dcc7775df23c61c41bf92b42d6d4dccb, type: 3}
       propertyPath: m_Name
       value: L Door
@@ -913,6 +917,10 @@ PrefabInstance:
       propertyPath: walls
       value: 
       objectReference: {fileID: 1313400418}
+    - target: {fileID: 8608919979575373581, guid: dcc7775df23c61c41bf92b42d6d4dccb, type: 3}
+      propertyPath: doorSide
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8608919979575373586, guid: dcc7775df23c61c41bf92b42d6d4dccb, type: 3}
       propertyPath: m_Name
       value: B Door
@@ -1812,6 +1820,10 @@ PrefabInstance:
       propertyPath: walls
       value: 
       objectReference: {fileID: 1313400418}
+    - target: {fileID: 8608919979575373581, guid: dcc7775df23c61c41bf92b42d6d4dccb, type: 3}
+      propertyPath: doorSide
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 8608919979575373586, guid: dcc7775df23c61c41bf92b42d6d4dccb, type: 3}
       propertyPath: m_Name
       value: R Door

@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class InputManager : MonoBehaviour, IEntityDirections
+public class InputManager : MonoBehaviour, IEntityControls
 {
 	public static InputManager Instance { get; private set; }
 	Controls controls;
 
-	public Vector2 WalkDirection { get; private set; }
-	public Quaternion LookDirection { get; private set; }
+	public Vector2 WalkVector { get; private set; }
+	public Quaternion LookVector { get; private set; }
 
 	private void Awake()
 	{
@@ -41,7 +41,7 @@ public class InputManager : MonoBehaviour, IEntityDirections
 
 	private void Update()
 	{
-		LookDirection = CalculateLookDirection(controls.Player.MousePosition.ReadValue<Vector2>()); // TODO - switch between mouse and other input
+		LookVector = CalculateLookDirection(controls.Player.MousePosition.ReadValue<Vector2>()); // TODO - switch between mouse and other input
 	}
 
 	private void OnMoveInput(InputAction.CallbackContext ctx)
@@ -51,7 +51,7 @@ public class InputManager : MonoBehaviour, IEntityDirections
 		{
 			value = value.normalized;
 		}
-		WalkDirection = value;
+		WalkVector = value;
 	}
 
 	private void OnLookInput(InputAction.CallbackContext ctx)
@@ -59,12 +59,12 @@ public class InputManager : MonoBehaviour, IEntityDirections
 		var value = ctx.ReadValue<Vector2>();
 
 		float angle = Mathf.Atan2(value.y, value.x) * Mathf.Rad2Deg;
-		LookDirection = Quaternion.Euler(0, 0, angle);
+		LookVector = Quaternion.Euler(0, 0, angle);
 	}
 
 	private void OnMouseInput(InputAction.CallbackContext ctx)
 	{
-		LookDirection = CalculateLookDirection(ctx.ReadValue<Vector2>());
+		LookVector = CalculateLookDirection(ctx.ReadValue<Vector2>());
 	}
 
 	private Quaternion CalculateLookDirection(Vector2 direction)

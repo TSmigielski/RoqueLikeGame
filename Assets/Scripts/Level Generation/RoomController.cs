@@ -164,7 +164,7 @@ public class RoomController : MonoBehaviour
 		{
 			return;
 		}
-		PlayerController.MyRoom = _room;
+		PlayerController.CurrentRoom = _room;
 		MinimapController.Instance.UpdateMinimap();
 
 		if (!PlayerController.VisitedRooms.Contains(_room))

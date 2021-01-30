@@ -43,7 +43,7 @@ public class CameraController : MonoBehaviour
 
 	private void UpdatePosition()
 	{
-		var myR = PlayerController.MyRoom;
+		var myR = PlayerController.CurrentRoom;
 
 		if (target == null || myR == null)
 			return;
