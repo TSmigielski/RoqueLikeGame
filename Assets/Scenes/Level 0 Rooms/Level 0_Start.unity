@@ -279,6 +279,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8608919979575373587, guid: dcc7775df23c61c41bf92b42d6d4dccb, type: 3}
   m_PrefabInstance: {fileID: 72597282}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &72597284 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8608919979575373581, guid: dcc7775df23c61c41bf92b42d6d4dccb, type: 3}
+  m_PrefabInstance: {fileID: 72597282}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9579da22683c78c4fa06da03baababe3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &203086183
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -345,6 +356,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8608919979575373587, guid: dcc7775df23c61c41bf92b42d6d4dccb, type: 3}
   m_PrefabInstance: {fileID: 203086183}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &203086185 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8608919979575373581, guid: dcc7775df23c61c41bf92b42d6d4dccb, type: 3}
+  m_PrefabInstance: {fileID: 203086183}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9579da22683c78c4fa06da03baababe3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &217861079
 GameObject:
   m_ObjectHideFlags: 0
@@ -779,7 +801,7 @@ MonoBehaviour:
   myColliders:
   - {fileID: 1759885401}
   - {fileID: 460171237}
-  myDoor: {fileID: 0}
+  myDoor: {fileID: 203086185}
 --- !u!1 &639391964
 GameObject:
   m_ObjectHideFlags: 0
@@ -1184,6 +1206,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8608919979575373587, guid: dcc7775df23c61c41bf92b42d6d4dccb, type: 3}
   m_PrefabInstance: {fileID: 1050585739}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1050585741 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8608919979575373581, guid: dcc7775df23c61c41bf92b42d6d4dccb, type: 3}
+  m_PrefabInstance: {fileID: 1050585739}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9579da22683c78c4fa06da03baababe3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1122398673
 GameObject:
   m_ObjectHideFlags: 0
@@ -1295,8 +1328,8 @@ Transform:
   m_Children:
   - {fileID: 1050585740}
   - {fileID: 72597283}
-  - {fileID: 1474086991}
   - {fileID: 203086184}
+  - {fileID: 1474086991}
   m_Father: {fileID: 8907256}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1415,7 +1448,7 @@ MonoBehaviour:
   myColliders:
   - {fileID: 1998218946}
   - {fileID: 1867564825}
-  myDoor: {fileID: 0}
+  myDoor: {fileID: 72597284}
 --- !u!1 &1526705057
 GameObject:
   m_ObjectHideFlags: 0
@@ -1473,15 +1506,15 @@ SpriteRenderer:
   m_SortingLayerID: -755181403
   m_SortingLayer: 1
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 42b6669272428d3409fca618c545184d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4587296e4282b714a864fb4949405ad3, type: 3}
   m_Color: {r: 0.7830189, g: 0.39520293, b: 0.39520293, a: 0.2784314}
   m_FlipX: 0
   m_FlipY: 0
-  m_DrawMode: 0
+  m_DrawMode: 2
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &1526705059
@@ -1597,7 +1630,7 @@ MonoBehaviour:
   myColliders:
   - {fileID: 319017889}
   - {fileID: 261772678}
-  myDoor: {fileID: 0}
+  myDoor: {fileID: 1050585741}
 --- !u!1 &1759885399
 GameObject:
   m_ObjectHideFlags: 0
