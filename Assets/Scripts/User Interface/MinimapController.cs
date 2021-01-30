@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(RectTransform))]
 public class MinimapController : MonoBehaviour
 {
 	public static MinimapController Instance { get; set; }
@@ -11,10 +12,15 @@ public class MinimapController : MonoBehaviour
 	public Transform minimapPlain;
 	public static List<MinimapRoom> minimapRooms = new List<MinimapRoom>();
 
+	RectTransform rT;
+	bool bigMinimap = false;
+
 	private void Awake()
 	{
 		if (Instance == null) Instance = this;
 		else Destroy(gameObject);
+
+		rT = GetComponent<RectTransform>();
 	}
 
 	public void UpdateMinimap()
@@ -48,5 +54,29 @@ public class MinimapController : MonoBehaviour
 		minimapRooms.Add(newMinimapRoom);
 		myRoom.MyMinimapRoom = newMinimapRoom;
 		return newMinimapRoom;
+	}
+
+	public void ToggleMinimap()
+	{
+		bigMinimap = !bigMinimap;
+
+		if (bigMinimap)
+		{
+			rT.anchorMin = new Vector2(.5f, 1);
+			rT.anchorMax = new Vector2(.5f, 1);
+			rT.pivot = new Vector2(.5f, 1);
+			rT.anchoredPosition = new Vector2(0, -50);
+			rT.localScale = new Vector3(1.5f, 1.5f, 1);
+			rT.sizeDelta = new Vector2(400, 275);
+
+			return;
+		}
+
+		rT.anchorMin = new Vector2(1, 1);
+		rT.anchorMax = new Vector2(1, 1);
+		rT.pivot = new Vector2(1, 1);
+		rT.anchoredPosition = new Vector2(-50, -50);
+		rT.localScale = Vector3.one;
+		rT.sizeDelta = new Vector2(300, 300);
 	}
 }

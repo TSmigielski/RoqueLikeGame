@@ -30,6 +30,7 @@ public class InputManager : MonoBehaviour, IEntityControls
 		controls.Enable();
 		controls.Player.Movement.performed += OnMoveInput;
 		controls.Player.LookDirection.performed += OnLookInput;
+		controls.Player.MinimapToggle.performed += OnMinimapToggle;
 	}
 
 	private void OnDisable()
@@ -37,11 +38,12 @@ public class InputManager : MonoBehaviour, IEntityControls
 		controls.Disable();
 		controls.Player.Movement.performed -= OnMoveInput;
 		controls.Player.LookDirection.performed -= OnLookInput;
+		controls.Player.MinimapToggle.performed -= OnMinimapToggle;
 	}
 
 	private void Update()
 	{
-		LookVector = CalculateLookDirection(controls.Player.MousePosition.ReadValue<Vector2>()); // TODO - switch between mouse and other input
+		//LookVector = CalculateLookDirection(controls.Player.MousePosition.ReadValue<Vector2>()); // TODO - switch between mouse and other input
 	}
 
 	private void OnMoveInput(InputAction.CallbackContext ctx)
@@ -72,5 +74,10 @@ public class InputManager : MonoBehaviour, IEntityControls
 		Vector2 lookDirection = Camera.main.ScreenToWorldPoint(direction) - transform.position;
 		float angle = Mathf.Atan2(lookDirection.y, lookDirection.x) * Mathf.Rad2Deg;
 		return Quaternion.Euler(0, 0, angle);
+	}
+
+	private void OnMinimapToggle(InputAction.CallbackContext ctx)
+	{
+		MinimapController.Instance.ToggleMinimap();
 	}
 }
