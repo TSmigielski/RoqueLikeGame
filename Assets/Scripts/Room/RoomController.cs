@@ -1,8 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class RoomInfo
@@ -88,6 +86,8 @@ public class RoomController : MonoBehaviour
 			foreach (var rm in loadedRooms)
 			{
 				rm.RemoveUnconnectedDoors();
+				rm.UpdateNeighbours();
+				MinimapController.Instance.UpdateMinimap();
 			}
 		}
 		isModifyingRoom = false;
@@ -164,12 +164,8 @@ public class RoomController : MonoBehaviour
 		{
 			return;
 		}
+		_room.PlayerVisited = true;
 		PlayerController.CurrentRoom = _room;
 		MinimapController.Instance.UpdateMinimap();
-
-		if (!PlayerController.VisitedRooms.Contains(_room))
-		{
-			PlayerController.VisitedRooms.Add(_room);
-		}
 	}
 }

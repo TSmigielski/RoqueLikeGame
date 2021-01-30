@@ -1,19 +1,26 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Image))]
 public class MinimapRoom : MonoBehaviour
 {
-	[SerializeField] private Color _roomColor = default;
-	public Color DefaultRoomColor
+	[SerializeField] private Color _unvisitedRoomColor = default;
+	public Color UnvisitedRoomColor
 	{
-		get { return _roomColor; }
+		get { return _unvisitedRoomColor; }
 	}
 
 	[SerializeField] private Color _visitedRoomColor = default;
 	public Color VisitedRoomColor
 	{
 		get { return _visitedRoomColor; }
+	}
+
+	[SerializeField] private Color _currentRoomColo = default;
+	public Color CurrentRoomColor
+	{
+		get { return _currentRoomColo; }
 	}
 
 	private Room _myRoom;
@@ -53,34 +60,24 @@ public class MinimapRoom : MonoBehaviour
 	private void Awake()
 	{
 		image = GetComponent<Image>();
-		image.color = VisitedRoomColor;
+		image.color = UnvisitedRoomColor;
 	}
 
-	public void FocusRoom()
+	public void CenterRoom(List<MinimapRoom> rooms, Transform minimapRoomPlain)
 	{
-		var rs = MinimapController.minimapRooms;
-
-		foreach (var r in rs)
+		foreach (var r in rooms) // Change the color of every room
 		{
-			r.image.color = DefaultRoomColor;
+			if (r.MyRoom.PlayerVisited)
+			{
+				r.image.color = VisitedRoomColor;
+			}
+			else
+			{
+				r.image.color = UnvisitedRoomColor;
+			}
 		}
-		image.color = VisitedRoomColor;
+		image.color = CurrentRoomColor; // Change color of current room
 
-		foreach (var r in rs)
-		{
-			r.transform.localPosition = new Vector2(RoomController.roomX, RoomController.roomY) * r.MyRoom.Coordinates;
-		}
-
-		Vector2 total = Vector2.zero;
-		foreach (var r in rs)
-		{
-			total += (Vector2)r.transform.localPosition;
-		}
-		total /= rs.Count;
-
-		foreach (var r in rs)
-		{
-			r.transform.localPosition -= (Vector3)total;
-		}
+		minimapRoomPlain.localPosition = new Vector3(-transform.localPosition.x, -transform.localPosition.y, 0); // Change position of the rooms plain
 	}
 }

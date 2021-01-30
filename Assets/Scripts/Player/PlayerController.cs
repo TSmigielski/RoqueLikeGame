@@ -88,7 +88,6 @@ public class PlayerController : MonoBehaviour, IEntity
 	}
 	#endregion
 
-	public static List<Room> VisitedRooms { get; set; } // List of every room visited by the player
 	public static Room CurrentRoom { get; set; } // The room the player is in right now
 
 	[Header("Other")]
@@ -98,7 +97,6 @@ public class PlayerController : MonoBehaviour, IEntity
 	private void Awake()
 	{
 		handleMovement = GetComponent<HandleEntityMovement>();
-		VisitedRooms = new List<Room>(); // Initialize the list
 	}
 
 	private void Start()
