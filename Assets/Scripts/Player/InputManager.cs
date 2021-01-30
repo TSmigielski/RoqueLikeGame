@@ -8,6 +8,9 @@ public class InputManager : MonoBehaviour, IEntityControls
 	public static InputManager Instance { get; private set; }
 	Controls controls;
 
+	bool mouseDetected = false;
+	float mouseTimer = .5f;
+
 	public Vector2 WalkVector { get; private set; }
 	public Quaternion LookVector { get; private set; }
 
@@ -30,6 +33,7 @@ public class InputManager : MonoBehaviour, IEntityControls
 		controls.Enable();
 		controls.Player.Movement.performed += OnMoveInput;
 		controls.Player.LookDirection.performed += OnLookInput;
+		controls.Player.MousePosition.performed += OnMouseInput;
 		controls.Player.MinimapToggle.performed += OnMinimapToggle;
 	}
 
@@ -38,12 +42,16 @@ public class InputManager : MonoBehaviour, IEntityControls
 		controls.Disable();
 		controls.Player.Movement.performed -= OnMoveInput;
 		controls.Player.LookDirection.performed -= OnLookInput;
+		controls.Player.MousePosition.performed -= OnMouseInput;
 		controls.Player.MinimapToggle.performed -= OnMinimapToggle;
 	}
 
 	private void Update()
 	{
-		//LookVector = CalculateLookDirection(controls.Player.MousePosition.ReadValue<Vector2>()); // TODO - switch between mouse and other input
+		if (mouseDetected)
+		{
+			LookVector = CalculateLookDirection(controls.Player.MousePosition.ReadValue<Vector2>());
+		}
 	}
 
 	private void OnMoveInput(InputAction.CallbackContext ctx)
@@ -58,6 +66,7 @@ public class InputManager : MonoBehaviour, IEntityControls
 
 	private void OnLookInput(InputAction.CallbackContext ctx)
 	{
+		mouseDetected = false;
 		var value = ctx.ReadValue<Vector2>();
 
 		float angle = Mathf.Atan2(value.y, value.x) * Mathf.Rad2Deg;
@@ -66,7 +75,7 @@ public class InputManager : MonoBehaviour, IEntityControls
 
 	private void OnMouseInput(InputAction.CallbackContext ctx)
 	{
-		LookVector = CalculateLookDirection(ctx.ReadValue<Vector2>());
+		mouseDetected = true;
 	}
 
 	private Quaternion CalculateLookDirection(Vector2 direction)
