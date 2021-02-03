@@ -111,11 +111,11 @@ public class PlayerController : MonoBehaviour, IEntity
 
 	private void HandleAnimations()
 	{
-		animator.SetFloat("VelocityMag", handleMovement.Velocity.magnitude); 
+		animator.SetFloat("VelocityMag", handleMovement.Velocity.magnitude);
 		animator.SetFloat("Walk Speed", handleMovement.Velocity.magnitude / 5f);
 	}
 
-	private void InitializeCharacter() //Takes values from chosen character that is stored in MyData singleton and puts it in the undeclared variables of this script
+	private void InitializeCharacter() //Takes values from chosen character that is stored in MyData singleton and assigns them to PlayerController variables
 	{
 		FirstName = MyData.Instance.MyCharacter.firstName;
 		LastName = MyData.Instance.MyCharacter.lastName;

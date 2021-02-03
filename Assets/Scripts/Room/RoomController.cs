@@ -20,7 +20,7 @@ public class RoomController : MonoBehaviour
 
 	public const float roomX = 36f, roomY = 20f;
 
-	private string currentWorldName = "Level 0";
+	private string currentLevelName = "Level 0";
 	private RoomInfo currentLoadRoomData;
 	private Queue<RoomInfo> loadRoomQueue = new Queue<RoomInfo>();
 	public static List<Room> loadedRooms = new List<Room>();
@@ -48,9 +48,7 @@ public class RoomController : MonoBehaviour
 			StartCoroutine(ModifyRooms());
 
 		if (isLoadingRoom || loadRoomQueue.Count == 0)
-		{
 			return;
-		}
 
 		isLoadingRoom = true;
 		currentLoadRoomData = loadRoomQueue.Dequeue();
@@ -103,7 +101,7 @@ public class RoomController : MonoBehaviour
 
 	private IEnumerator LoadRoomRoutine(RoomInfo _info)
 	{
-		string roomName = $"{currentWorldName}_{_info.name}";
+		string roomName = $"{currentLevelName}_{_info.name}";
 
 		AsyncOperation loadRoom = SceneManager.LoadSceneAsync(roomName, LoadSceneMode.Additive);
 
@@ -124,7 +122,7 @@ public class RoomController : MonoBehaviour
 
 		_room.transform.position = new Vector3(currentLoadRoomData.coordinates.x * roomX, currentLoadRoomData.coordinates.y * roomY, 0);
 		_room.Coordinates = currentLoadRoomData.coordinates;
-		_room.name = $"{currentWorldName}-{currentLoadRoomData.name} ({_room.Coordinates.x},{_room.Coordinates.y})";
+		_room.name = $"{currentLevelName}-{currentLoadRoomData.name} ({_room.Coordinates.x},{_room.Coordinates.y})";
 		_room.transform.SetParent(transform);
 
 		loadedRooms.Add(_room);
