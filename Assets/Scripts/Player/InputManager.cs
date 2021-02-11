@@ -9,7 +9,6 @@ public class InputManager : MonoBehaviour, IEntityControls
 	Controls controls;
 
 	bool mouseDetected = false;
-	float mouseTimer = .5f;
 
 	public Vector2 WalkVector { get; private set; }
 	public Quaternion LookVector { get; private set; }
@@ -48,10 +47,10 @@ public class InputManager : MonoBehaviour, IEntityControls
 
 	private void Update()
 	{
-		if (mouseDetected)
-		{
-			LookVector = CalculateLookDirection(controls.Player.MousePosition.ReadValue<Vector2>());
-		}
+		OnMouseInputLogic();
+
+		if (!mouseDetected && controls.Player.LookDirection.ReadValue<Vector2>() == Vector2.zero)
+			CameraController.Instance.CameraControlSelector = 0;
 	}
 
 	private void OnMoveInput(InputAction.CallbackContext ctx)
@@ -67,15 +66,31 @@ public class InputManager : MonoBehaviour, IEntityControls
 	private void OnLookInput(InputAction.CallbackContext ctx)
 	{
 		mouseDetected = false;
+
 		var value = ctx.ReadValue<Vector2>();
 
 		float angle = Mathf.Atan2(value.y, value.x) * Mathf.Rad2Deg;
 		LookVector = Quaternion.Euler(0, 0, angle);
+
+		CameraController.Instance.CameraControlSelector = 2;
+		CameraController.Instance.LookDirection = value;
 	}
 
 	private void OnMouseInput(InputAction.CallbackContext ctx)
 	{
 		mouseDetected = true;
+	}
+
+	private void OnMouseInputLogic()
+	{
+		if (!mouseDetected)
+			return;
+
+		var value = controls.Player.MousePosition.ReadValue<Vector2>();
+		LookVector = CalculateLookDirection(value);
+
+		CameraController.Instance.CameraControlSelector = 1;
+		CameraController.Instance.MousePosition = value;
 	}
 
 	private Quaternion CalculateLookDirection(Vector2 direction)

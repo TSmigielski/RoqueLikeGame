@@ -8,9 +8,16 @@ public class CameraController : MonoBehaviour
 	public static CameraController Instance { get; private set; }
 	public static Camera MainCamera { get; private set; }
 
+	public int CameraControlSelector { get; set; } // (1 == mouse controlled) ; (2 == stick/arrows controlled) ; (else == default)
+	public Vector2 MousePosition { get; set; }
+	public Vector2 LookDirection { get; set; }
+
 	public Transform target;
+	Vector3 newPos;
 	public float baseSpeed;
 	private float actualSpeed, timer;
+
+	float camSize, aspect;
 
 	private void Awake()
 	{
@@ -22,7 +29,12 @@ public class CameraController : MonoBehaviour
 		{
 			Destroy(gameObject);
 		}
-		MainCamera = GetComponent<Camera>();
+		MainCamera = GetComponentInChildren<Camera>();
+	}
+
+	private void Start()
+	{
+		InitializeCamera();
 	}
 
 	private void Update()
@@ -41,20 +53,34 @@ public class CameraController : MonoBehaviour
 		UpdatePosition();
 	}
 
+	public void InitializeCamera()
+	{
+		camSize = MainCamera.orthographicSize;
+		aspect = MainCamera.aspect;
+	}
+
 	private void UpdatePosition()
 	{
-		var myR = PlayerController.CurrentRoom;
-
-		if (target == null || myR == null)
+		if (target == null || PlayerController.CurrentRoom == null)
 			return;
 
-		var newPos = target.position;
-		newPos.z = transform.position.z;
-		var camSize = MainCamera.orthographicSize;
-		var aspect = MainCamera.aspect;
+		if (CameraControlSelector == 1)
+		{
+			newPos = Vector3.Lerp(target.position, MainCamera.ScreenToWorldPoint(MousePosition), .3f);
+		}
+		else if (CameraControlSelector == 2)
+		{
+			newPos = Vector3.Lerp(target.position, (LookDirection * 10) + (Vector2)target.position, .3f);
+		}
+		else
+		{
+			newPos = target.position;
+		}
 
-		newPos.x = Mathf.Clamp(newPos.x, myR.transform.position.x - (myR.Dimension.x / 2) + camSize * aspect, myR.transform.position.x + (myR.Dimension.x / 2) - camSize * aspect);
-		newPos.y = Mathf.Clamp(newPos.y, myR.transform.position.y - (myR.Dimension.y / 2) + camSize, myR.transform.position.y + (myR.Dimension.y / 2) - camSize);
+		newPos.z = transform.position.z;
+
+		newPos.x = Mathf.Clamp(newPos.x, PlayerController.CurrentRoom.transform.position.x - (PlayerController.CurrentRoom.Dimension.x / 2) + camSize * aspect, PlayerController.CurrentRoom.transform.position.x + (PlayerController.CurrentRoom.Dimension.x / 2) - camSize * aspect);
+		newPos.y = Mathf.Clamp(newPos.y, PlayerController.CurrentRoom.transform.position.y - (PlayerController.CurrentRoom.Dimension.y / 2) + camSize, PlayerController.CurrentRoom.transform.position.y + (PlayerController.CurrentRoom.Dimension.y / 2) - camSize);
 
 		transform.position = Vector3.Lerp(transform.position, newPos, actualSpeed * Time.deltaTime);
 	}
