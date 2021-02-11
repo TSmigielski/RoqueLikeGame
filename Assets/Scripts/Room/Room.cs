@@ -45,6 +45,7 @@ public class Room : MonoBehaviour
 	}
 
 	public bool PlayerVisited { get; set; } = false;
+	public PopulateRoom MyPopulator { get; set; }
 
 	public Dictionary<DoorSide, List<Room>> NeighbouringRooms { get; set; }
 
