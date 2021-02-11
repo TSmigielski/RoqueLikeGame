@@ -50,7 +50,15 @@ public class InputManager : MonoBehaviour, IEntityControls
 		OnMouseInputLogic();
 
 		if (!mouseDetected && controls.Player.LookDirection.ReadValue<Vector2>() == Vector2.zero)
+		{
 			CameraController.Instance.CameraControlSelector = 0;
+			if (WalkVector != Vector2.zero)
+			{
+				var rotation = Quaternion.LookRotation(Vector3.forward, WalkVector);
+				rotation.eulerAngles += new Vector3(0, 0, 90);
+				LookVector = rotation;
+			}
+		}
 	}
 
 	private void OnMoveInput(InputAction.CallbackContext ctx)
