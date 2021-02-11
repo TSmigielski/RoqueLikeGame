@@ -46,7 +46,7 @@ public class Room : MonoBehaviour
 
 	public bool PlayerVisited { get; set; } = false;
 
-	public Dictionary<string, List<Room>> NeighbouringRooms { get; set; }
+	public Dictionary<DoorSide, List<Room>> NeighbouringRooms { get; set; }
 
 	public List<Door> doors = new List<Door>();
 	public List<Wall> walls = new List<Wall>();
@@ -77,7 +77,7 @@ public class Room : MonoBehaviour
 
 	private void Awake()
 	{
-		NeighbouringRooms = new Dictionary<string, List<Room>>();
+		NeighbouringRooms = new Dictionary<DoorSide, List<Room>>();
 	}
 
 	private void Start()
@@ -113,19 +113,19 @@ public class Room : MonoBehaviour
 		{
 			if (GetOffsetRoom(Vector2.up))
 			{
-				NeighbouringRooms.Add("up", new List<Room>() { GetOffsetRoom(Vector2.up) } );
+				NeighbouringRooms.Add(DoorSide.Top, new List<Room>() { GetOffsetRoom(Vector2.up) } );
 			}
 			if (GetOffsetRoom(Vector2.right))
 			{
-				NeighbouringRooms.Add("right", new List<Room>() { GetOffsetRoom(Vector2.right) });
+				NeighbouringRooms.Add(DoorSide.Right, new List<Room>() { GetOffsetRoom(Vector2.right) });
 			}
 			if (GetOffsetRoom(Vector2.down))
 			{
-				NeighbouringRooms.Add("down", new List<Room>() { GetOffsetRoom(Vector2.down) });
+				NeighbouringRooms.Add(DoorSide.Bottom, new List<Room>() { GetOffsetRoom(Vector2.down) });
 			}
 			if (GetOffsetRoom(Vector2.left))
 			{
-				NeighbouringRooms.Add("left", new List<Room>() { GetOffsetRoom(Vector2.left) });
+				NeighbouringRooms.Add(DoorSide.Left, new List<Room>() { GetOffsetRoom(Vector2.left) });
 			}
 
 			return;
@@ -135,62 +135,62 @@ public class Room : MonoBehaviour
 		{
 			if (GetOffsetRoom(v2Multi_TopLeft))
 			{
-				if (NeighbouringRooms.ContainsKey("up"))
-					NeighbouringRooms["up"].Add(GetOffsetRoom(v2Multi_TopLeft));
+				if (NeighbouringRooms.ContainsKey(DoorSide.Top))
+					NeighbouringRooms[DoorSide.Top].Add(GetOffsetRoom(v2Multi_TopLeft));
 				else
-					NeighbouringRooms.Add("up", new List<Room>() { GetOffsetRoom(v2Multi_TopLeft) });
+					NeighbouringRooms.Add(DoorSide.Top, new List<Room>() { GetOffsetRoom(v2Multi_TopLeft) });
 			}
 			if (GetOffsetRoom(v2Multi_TopRight))
 			{
-				if (NeighbouringRooms.ContainsKey("up"))
-					NeighbouringRooms["up"].Add(GetOffsetRoom(v2Multi_TopRight));
+				if (NeighbouringRooms.ContainsKey(DoorSide.Top))
+					NeighbouringRooms[DoorSide.Top].Add(GetOffsetRoom(v2Multi_TopRight));
 				else
-					NeighbouringRooms.Add("up", new List<Room>() { GetOffsetRoom(v2Multi_TopRight) });
+					NeighbouringRooms.Add(DoorSide.Top, new List<Room>() { GetOffsetRoom(v2Multi_TopRight) });
 			}
 
 			if (GetOffsetRoom(v2Multi_RightTop))
 			{
-				if (NeighbouringRooms.ContainsKey("right"))
-					NeighbouringRooms["right"].Add(GetOffsetRoom(v2Multi_RightTop));
+				if (NeighbouringRooms.ContainsKey(DoorSide.Right))
+					NeighbouringRooms[DoorSide.Right].Add(GetOffsetRoom(v2Multi_RightTop));
 				else
-					NeighbouringRooms.Add("right", new List<Room>() { GetOffsetRoom(v2Multi_RightTop) });
+					NeighbouringRooms.Add(DoorSide.Right, new List<Room>() { GetOffsetRoom(v2Multi_RightTop) });
 			}
 			if (GetOffsetRoom(v2Multi_RightBottom))
 			{
-				if (NeighbouringRooms.ContainsKey("right"))
-					NeighbouringRooms["right"].Add(GetOffsetRoom(v2Multi_RightBottom));
+				if (NeighbouringRooms.ContainsKey(DoorSide.Right))
+					NeighbouringRooms[DoorSide.Right].Add(GetOffsetRoom(v2Multi_RightBottom));
 				else
-					NeighbouringRooms.Add("right", new List<Room>() { GetOffsetRoom(v2Multi_RightBottom) });
+					NeighbouringRooms.Add(DoorSide.Right, new List<Room>() { GetOffsetRoom(v2Multi_RightBottom) });
 			}
 
 			if (GetOffsetRoom(v2Multi_BottomRight))
 			{
-				if (NeighbouringRooms.ContainsKey("down"))
-					NeighbouringRooms["down"].Add(GetOffsetRoom(v2Multi_BottomRight));
+				if (NeighbouringRooms.ContainsKey(DoorSide.Bottom))
+					NeighbouringRooms[DoorSide.Bottom].Add(GetOffsetRoom(v2Multi_BottomRight));
 				else
-					NeighbouringRooms.Add("down", new List<Room>() { GetOffsetRoom(v2Multi_BottomRight) });
+					NeighbouringRooms.Add(DoorSide.Bottom, new List<Room>() { GetOffsetRoom(v2Multi_BottomRight) });
 			}
 			if (GetOffsetRoom(v2Multi_BottomLeft))
 			{
-				if (NeighbouringRooms.ContainsKey("down"))
-					NeighbouringRooms["down"].Add(GetOffsetRoom(v2Multi_BottomLeft));
+				if (NeighbouringRooms.ContainsKey(DoorSide.Bottom))
+					NeighbouringRooms[DoorSide.Bottom].Add(GetOffsetRoom(v2Multi_BottomLeft));
 				else
-					NeighbouringRooms.Add("down", new List<Room>() { GetOffsetRoom(v2Multi_BottomLeft) });
+					NeighbouringRooms.Add(DoorSide.Bottom, new List<Room>() { GetOffsetRoom(v2Multi_BottomLeft) });
 			}
 
 			if (GetOffsetRoom(v2Multi_LeftBottom))
 			{
-				if (NeighbouringRooms.ContainsKey("left"))
-					NeighbouringRooms["left"].Add(GetOffsetRoom(v2Multi_LeftBottom));
+				if (NeighbouringRooms.ContainsKey(DoorSide.Left))
+					NeighbouringRooms[DoorSide.Left].Add(GetOffsetRoom(v2Multi_LeftBottom));
 				else
-					NeighbouringRooms.Add("left", new List<Room>() { GetOffsetRoom(v2Multi_LeftBottom) });
+					NeighbouringRooms.Add(DoorSide.Left, new List<Room>() { GetOffsetRoom(v2Multi_LeftBottom) });
 			}
 			if (GetOffsetRoom(v2Multi_LeftTop))
 			{
-				if (NeighbouringRooms.ContainsKey("left"))
-					NeighbouringRooms["left"].Add(GetOffsetRoom(v2Multi_LeftTop));
+				if (NeighbouringRooms.ContainsKey(DoorSide.Left))
+					NeighbouringRooms[DoorSide.Left].Add(GetOffsetRoom(v2Multi_LeftTop));
 				else
-					NeighbouringRooms.Add("left", new List<Room>() { GetOffsetRoom(v2Multi_LeftTop) });
+					NeighbouringRooms.Add(DoorSide.Left, new List<Room>() { GetOffsetRoom(v2Multi_LeftTop) });
 			}
 		}
 
@@ -198,42 +198,42 @@ public class Room : MonoBehaviour
 		{
 			if (GetOffsetRoom(v2Multi_TopLeft - new Vector2(0, .5f)))
 			{
-				if (NeighbouringRooms.ContainsKey("up"))
-					NeighbouringRooms["up"].Add(GetOffsetRoom(v2Multi_TopLeft - new Vector2(0, .5f)));
+				if (NeighbouringRooms.ContainsKey(DoorSide.Top))
+					NeighbouringRooms[DoorSide.Top].Add(GetOffsetRoom(v2Multi_TopLeft - new Vector2(0, .5f)));
 				else
-					NeighbouringRooms.Add("up", new List<Room>() { GetOffsetRoom(v2Multi_TopLeft - new Vector2(0, .5f)) });
+					NeighbouringRooms.Add(DoorSide.Top, new List<Room>() { GetOffsetRoom(v2Multi_TopLeft - new Vector2(0, .5f)) });
 			}
 			if (GetOffsetRoom(v2Multi_TopRight - new Vector2(0, .5f)))
 			{
-				if (NeighbouringRooms.ContainsKey("up"))
-					NeighbouringRooms["up"].Add(GetOffsetRoom(v2Multi_TopRight - new Vector2(0, .5f)));
+				if (NeighbouringRooms.ContainsKey(DoorSide.Top))
+					NeighbouringRooms[DoorSide.Top].Add(GetOffsetRoom(v2Multi_TopRight - new Vector2(0, .5f)));
 				else
-					NeighbouringRooms.Add("up", new List<Room>() { GetOffsetRoom(v2Multi_TopRight - new Vector2(0, .5f)) });
+					NeighbouringRooms.Add(DoorSide.Top, new List<Room>() { GetOffsetRoom(v2Multi_TopRight - new Vector2(0, .5f)) });
 			}
 
 			if (GetOffsetRoom(Vector2.right + new Vector2(.5f, 0)))
 			{
-				NeighbouringRooms.Add("right", new List<Room>() { GetOffsetRoom(Vector2.right + new Vector2(.5f, 0)) });
+				NeighbouringRooms.Add(DoorSide.Right, new List<Room>() { GetOffsetRoom(Vector2.right + new Vector2(.5f, 0)) });
 			}
 
 			if (GetOffsetRoom(v2Multi_BottomRight + new Vector2(0, .5f)))
 			{
-				if (NeighbouringRooms.ContainsKey("down"))
-					NeighbouringRooms["down"].Add(GetOffsetRoom(v2Multi_BottomRight + new Vector2(0, .5f)));
+				if (NeighbouringRooms.ContainsKey(DoorSide.Bottom))
+					NeighbouringRooms[DoorSide.Bottom].Add(GetOffsetRoom(v2Multi_BottomRight + new Vector2(0, .5f)));
 				else
-					NeighbouringRooms.Add("down", new List<Room>() { GetOffsetRoom(v2Multi_BottomRight + new Vector2(0, .5f)) });
+					NeighbouringRooms.Add(DoorSide.Bottom, new List<Room>() { GetOffsetRoom(v2Multi_BottomRight + new Vector2(0, .5f)) });
 			}
 			if (GetOffsetRoom(v2Multi_BottomLeft + new Vector2(0, .5f)))
 			{
-				if (NeighbouringRooms.ContainsKey("down"))
-					NeighbouringRooms["down"].Add(GetOffsetRoom(v2Multi_BottomLeft + new Vector2(0, .5f)));
+				if (NeighbouringRooms.ContainsKey(DoorSide.Bottom))
+					NeighbouringRooms[DoorSide.Bottom].Add(GetOffsetRoom(v2Multi_BottomLeft + new Vector2(0, .5f)));
 				else
-					NeighbouringRooms.Add("down", new List<Room>() { GetOffsetRoom(v2Multi_BottomLeft + new Vector2(0, .5f)) });
+					NeighbouringRooms.Add(DoorSide.Bottom, new List<Room>() { GetOffsetRoom(v2Multi_BottomLeft + new Vector2(0, .5f)) });
 			}
 
 			if (GetOffsetRoom(Vector2.left - new Vector2(.5f, 0)))
 			{
-				NeighbouringRooms.Add("left", new List<Room>() { GetOffsetRoom(Vector2.left - new Vector2(.5f, 0)) });
+				NeighbouringRooms.Add(DoorSide.Left, new List<Room>() { GetOffsetRoom(Vector2.left - new Vector2(.5f, 0)) });
 			}
 		}
 
@@ -241,42 +241,42 @@ public class Room : MonoBehaviour
 		{
 			if (GetOffsetRoom(Vector2.up + new Vector2(0, .5f)))
 			{
-				NeighbouringRooms.Add("up", new List<Room>() { GetOffsetRoom(Vector2.up + new Vector2(0, .5f)) });
+				NeighbouringRooms.Add(DoorSide.Top, new List<Room>() { GetOffsetRoom(Vector2.up + new Vector2(0, .5f)) });
 			}
 
 			if (GetOffsetRoom(v2Multi_RightTop - new Vector2(.5f, 0)))
 			{
-				if (NeighbouringRooms.ContainsKey("right"))
-					NeighbouringRooms["right"].Add(GetOffsetRoom(v2Multi_RightTop - new Vector2(.5f, 0)));
+				if (NeighbouringRooms.ContainsKey(DoorSide.Right))
+					NeighbouringRooms[DoorSide.Right].Add(GetOffsetRoom(v2Multi_RightTop - new Vector2(.5f, 0)));
 				else
-					NeighbouringRooms.Add("right", new List<Room>() { GetOffsetRoom(v2Multi_RightTop - new Vector2(.5f, 0)) });
+					NeighbouringRooms.Add(DoorSide.Right, new List<Room>() { GetOffsetRoom(v2Multi_RightTop - new Vector2(.5f, 0)) });
 			}
 			if (GetOffsetRoom(v2Multi_RightBottom - new Vector2(.5f, 0)))
 			{
-				if (NeighbouringRooms.ContainsKey("right"))
-					NeighbouringRooms["right"].Add(GetOffsetRoom(v2Multi_RightBottom - new Vector2(.5f, 0)));
+				if (NeighbouringRooms.ContainsKey(DoorSide.Right))
+					NeighbouringRooms[DoorSide.Right].Add(GetOffsetRoom(v2Multi_RightBottom - new Vector2(.5f, 0)));
 				else
-					NeighbouringRooms.Add("right", new List<Room>() { GetOffsetRoom(v2Multi_RightBottom - new Vector2(.5f, 0)) });
+					NeighbouringRooms.Add(DoorSide.Right, new List<Room>() { GetOffsetRoom(v2Multi_RightBottom - new Vector2(.5f, 0)) });
 			}
 
 			if (GetOffsetRoom(Vector2.down - new Vector2(0, .5f)))
 			{
-				NeighbouringRooms.Add("down", new List<Room>() { GetOffsetRoom(Vector2.down - new Vector2(0, .5f)) });
+				NeighbouringRooms.Add(DoorSide.Bottom, new List<Room>() { GetOffsetRoom(Vector2.down - new Vector2(0, .5f)) });
 			}
 
 			if (GetOffsetRoom(v2Multi_LeftBottom + new Vector2(.5f, 0)))
 			{
-				if (NeighbouringRooms.ContainsKey("left"))
-					NeighbouringRooms["left"].Add(GetOffsetRoom(v2Multi_LeftBottom + new Vector2(.5f, 0)));
+				if (NeighbouringRooms.ContainsKey(DoorSide.Left))
+					NeighbouringRooms[DoorSide.Left].Add(GetOffsetRoom(v2Multi_LeftBottom + new Vector2(.5f, 0)));
 				else
-					NeighbouringRooms.Add("left", new List<Room>() { GetOffsetRoom(v2Multi_LeftBottom + new Vector2(.5f, 0)) });
+					NeighbouringRooms.Add(DoorSide.Left, new List<Room>() { GetOffsetRoom(v2Multi_LeftBottom + new Vector2(.5f, 0)) });
 			}
 			if (GetOffsetRoom(v2Multi_LeftTop + new Vector2(.5f, 0)))
 			{
-				if (NeighbouringRooms.ContainsKey("left"))
-					NeighbouringRooms["left"].Add(GetOffsetRoom(v2Multi_LeftTop + new Vector2(.5f, 0)));
+				if (NeighbouringRooms.ContainsKey(DoorSide.Left))
+					NeighbouringRooms[DoorSide.Left].Add(GetOffsetRoom(v2Multi_LeftTop + new Vector2(.5f, 0)));
 				else
-					NeighbouringRooms.Add("left", new List<Room>() { GetOffsetRoom(v2Multi_LeftTop + new Vector2(.5f, 0)) });
+					NeighbouringRooms.Add(DoorSide.Left, new List<Room>() { GetOffsetRoom(v2Multi_LeftTop + new Vector2(.5f, 0)) });
 			}
 		}
 
@@ -285,7 +285,7 @@ public class Room : MonoBehaviour
 			Debug.LogError($"Something went horribly wrong! Room \"{gameObject.name}\" is not a \"not multi-room\" and does not have a valid size if it is a multi-room");
 		}
 
-		var tmp = new Dictionary<string, List<Room>>();
+		var tmp = new Dictionary<DoorSide, List<Room>>();
 		foreach (var item in NeighbouringRooms.Keys)
 		{
 			tmp.Add(item, NeighbouringRooms[item].Distinct().ToList());
