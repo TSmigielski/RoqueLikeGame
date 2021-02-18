@@ -85,7 +85,8 @@ public class RoomController : MonoBehaviour
 			{
 				rm.RemoveUnconnectedDoors();
 				rm.UpdateNeighbours();
-				rm.MyPopulator.InitializeRoomInterior();
+				if (rm.MyPopulator != null)
+					rm.MyPopulator.InitializeRoomInterior();
 				MinimapController.Instance.UpdateMinimap();
 			}
 		}

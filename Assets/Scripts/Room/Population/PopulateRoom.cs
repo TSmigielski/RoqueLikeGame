@@ -38,7 +38,6 @@ public class PopulateRoom : MonoBehaviour
 	private void Awake()
 	{
 		myRoom = GetComponent<Room>();
-		myRoom.MyPopulator = this;
 		availableRooms.AddRange(universal);
 	}
 

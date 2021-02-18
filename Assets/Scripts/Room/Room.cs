@@ -45,7 +45,7 @@ public class Room : MonoBehaviour
 	}
 
 	public bool PlayerVisited { get; set; } = false;
-	public PopulateRoom MyPopulator { get; set; }
+	public PopulateRoom MyPopulator { get; private set; }
 
 	public Dictionary<DoorSide, List<Room>> NeighbouringRooms { get; set; }
 
@@ -78,6 +78,7 @@ public class Room : MonoBehaviour
 
 	private void Awake()
 	{
+		MyPopulator = GetComponent<PopulateRoom>();
 		NeighbouringRooms = new Dictionary<DoorSide, List<Room>>();
 	}
 

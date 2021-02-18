@@ -12,18 +12,18 @@ EditorBuildSettings:
     path: Assets/Scenes/Level 0.unity
     guid: d1c3109bdb54ad54c8a2b2838528e640
   - enabled: 1
-    path: Assets/Scenes/Level 0 Rooms/Level 0_Start.unity
+    path: Assets/Rooms/Level 0 Rooms/Level 0_Start.unity
     guid: d9c31f4cd3ae3bf458ee10d12e5ea678
   - enabled: 1
-    path: Assets/Scenes/Level 0 Rooms/Level 0_Empty.unity
+    path: Assets/Rooms/Level 0 Rooms/Level 0_Empty.unity
     guid: 3c562f8557457f9449d0c5fd577af4ab
   - enabled: 1
-    path: Assets/Scenes/Level 0 Rooms/Level 0_Empty 1x2.unity
-    guid: fecae8f718423f3489db3afb6898ce6a
+    path: Assets/Rooms/Level 0 Rooms/Level 0_Empty 2x2.unity
+    guid: 2e964325ded0ff74fb00265ae774e857
   - enabled: 1
-    path: Assets/Scenes/Level 0 Rooms/Level 0_Empty 2x1.unity
-    guid: 07cdf49b740e013409195160d1b3fcd2
+    path: Assets/Rooms/Level 0 Rooms/Level 0_Empty 1x2.unity
+    guid: f0e874f51a06f644691ced1e6882e1f0
   - enabled: 1
-    path: Assets/Scenes/Level 0 Rooms/Level 0_Empty 2x2.unity
-    guid: 81a4343cf56faba43ba07303619a9bc2
+    path: Assets/Rooms/Level 0 Rooms/Level 0_Empty 2x1.unity
+    guid: 68d583d9ff468634f852fb957e6de7fe
   m_configObjects: {}
