@@ -1,82 +1,70 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 [RequireComponent(typeof(RectTransform))]
-public class MinimapController : MonoBehaviour
+public class MinimapController : MonoBehaviour // todo - Add 'per room' scalability and minimap zoom
 {
-	public static MinimapController Instance { get; set; }
+	public static MinimapController Instance { get; private set; } // Singleton
 
-	public GameObject roomPrefab;
-	public Transform minimapPlain;
-	public static List<MinimapRoom> minimapRooms = new List<MinimapRoom>();
+	[SerializeField] GameObject minimapRoomPrefab;
+	[SerializeField] Transform minimapRoomsParent;
+	[Space]
+	[SerializeField] Color notVisitedRoomColor;
+	[SerializeField] Color visitedRoomColor;
+	[SerializeField] Color currentRoomColor;
+	[SerializeField] [Min(0)] float padding;
 
-	RectTransform rT;
-	bool bigMinimap = false;
+	public static List<MinimapRoom> MiniMapRooms { get; private set; } = new List<MinimapRoom>();
 
 	private void Awake()
 	{
-		if (Instance == null) Instance = this;
-		else Destroy(gameObject);
+		if (Instance == null)	 //
+			Instance = this;	 // Singleton
+		else					 //
+			Destroy(gameObject); //
 
-		rT = GetComponent<RectTransform>();
+		SetColors();
+	}
+
+	public void InitializeMinimap()
+	{
+		foreach (var room in RoomManager.ActiveRooms)
+		{
+			var mR = Instantiate(minimapRoomPrefab, minimapRoomsParent);
+			var rT = mR.GetComponent<RectTransform>();
+			rT.sizeDelta = room.Info.TrueSize - new Vector2(padding, padding);
+			rT.transform.localPosition = room.Info.CenterPoint;
+			var script = mR.GetComponent<MinimapRoom>();
+			script.Coordinates = room.Info.Coordinates;
+			MiniMapRooms.Add(script);
+		}
+		UpdateMinimap();
 	}
 
 	public void UpdateMinimap()
 	{
-		var myRoom = PlayerController.CurrentRoom; // Var for easy access to player's current room
-
-		foreach (var rArray in myRoom.NeighbouringRooms.Values) // Create a room for each of the neighbours if it doesn't exist already
+		foreach (var room in MiniMapRooms)
 		{
-			foreach (var r in rArray)
-			{
-				if (r.MyMinimapRoom == null)
-					CreateNewMinimapRoom(r);
-			}
+			room.UpdateRoom();
 		}
 
-		if (myRoom.MyMinimapRoom != null) // If the room already exists on the minimap, just center it and return
-		{
-			myRoom.MyMinimapRoom.CenterRoom(minimapRooms, minimapPlain);
-			return;
-		}
+		minimapRoomsParent.localPosition = Vector3.zero - (Vector3)RoomManager.PlayerRoom.Info.CenterPoint; // Position current minimap room to the center
+	}																										// Together with every other ofcourse
 
-		// Else: create a new room and center it
-
-		CreateNewMinimapRoom(myRoom).CenterRoom(minimapRooms, minimapPlain);
+	public void SetColors()
+	{
+		MinimapRoom.NotVisitedColor = notVisitedRoomColor;
+		MinimapRoom.VisitedColor = visitedRoomColor;
+		MinimapRoom.CurrentColor = currentRoomColor;
 	}
 
-	private MinimapRoom CreateNewMinimapRoom(Room myRoom)
+	public static MinimapRoom GetMinimapRoom(Vector2 _coordinates)
 	{
-		var newMinimapRoom = Instantiate(roomPrefab, minimapPlain.transform).GetComponent<MinimapRoom>();
-		newMinimapRoom.transform.localPosition = new Vector2(RoomController.roomX, RoomController.roomY) * myRoom.Coordinates;
-		minimapRooms.Add(newMinimapRoom);
-		myRoom.MyMinimapRoom = newMinimapRoom;
-		return newMinimapRoom;
-	}
-
-	public void ToggleMinimap()
-	{
-		bigMinimap = !bigMinimap;
-
-		if (bigMinimap)
+		foreach (var room in MiniMapRooms)
 		{
-			rT.anchorMin = new Vector2(.5f, 1);
-			rT.anchorMax = new Vector2(.5f, 1);
-			rT.pivot = new Vector2(.5f, 1);
-			rT.anchoredPosition = new Vector2(0, -50);
-			rT.localScale = new Vector3(1.5f, 1.5f, 1);
-			rT.sizeDelta = new Vector2(400, 275);
-
-			return;
+			if (room.Coordinates == _coordinates)
+				return room;
 		}
-
-		rT.anchorMin = new Vector2(1, 1);
-		rT.anchorMax = new Vector2(1, 1);
-		rT.pivot = new Vector2(1, 1);
-		rT.anchoredPosition = new Vector2(-50, -50);
-		rT.localScale = Vector3.one;
-		rT.sizeDelta = new Vector2(300, 300);
+		return null;
 	}
 }

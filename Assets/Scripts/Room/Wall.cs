@@ -1,32 +1,21 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public enum WallSide { Top, Bottom, Left, Right }
+﻿using UnityEngine;
 
 public class Wall : MonoBehaviour
 {
-	public WallSide wallSide;
-	public BoxCollider2D[] myColliders;
-	public Door myDoor;
+	// This script has 2 purposes,
+	// Hold the 3 public components (from below),
+	// For easy access from the Room script,
+	// And to know it's side,
+	// To safe the Room script from making 1 extra calculation.
 
-	public void DestroyWall()
+	[SerializeField] private Direction _side;
+	public Direction Side
 	{
-		foreach (var bx in myColliders)
-		{
-			Destroy(bx.gameObject);
-		}
-
-		foreach (var r in FindObjectsOfType<Room>())
-		{
-			if (r.walls.Contains(this))
-			{
-				r.doors.Remove(myDoor);
-				break;
-			}
-		}
-
-		Destroy(myDoor.gameObject);
-		Destroy(gameObject);
+		get { return _side; }
+		set { _side = value; }
 	}
+
+	public SpriteRenderer sR;
+	public BoxCollider2D cL;
+	public Transform corner;
 }

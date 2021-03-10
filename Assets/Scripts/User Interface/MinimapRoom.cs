@@ -1,83 +1,53 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Image))]
 public class MinimapRoom : MonoBehaviour
 {
-	[SerializeField] private Color _unvisitedRoomColor = default;
-	public Color UnvisitedRoomColor
-	{
-		get { return _unvisitedRoomColor; }
-	}
+	public static Color NotVisitedColor { get; set; }
+	public static Color VisitedColor { get; set; }
+	public static Color CurrentColor { get; set; }
+	public Vector2 Coordinates { get; set; }
 
-	[SerializeField] private Color _visitedRoomColor = default;
-	public Color VisitedRoomColor
-	{
-		get { return _visitedRoomColor; }
-	}
-
-	[SerializeField] private Color _currentRoomColo = default;
-	public Color CurrentRoomColor
-	{
-		get { return _currentRoomColo; }
-	}
-
-	private Room _myRoom;
-	public Room MyRoom
-	{
-		get { return _myRoom; }
-		set
-		{
-			_myRoom = value;
-
-			Vector2 size;
-
-			if (_myRoom.Dimension.x == 36)
-			{
-				size.x = 34;
-			}
-			else
-			{
-				size.x = 70;
-			}
-
-			if (_myRoom.Dimension.y == 20)
-			{
-				size.y = 18;
-			}
-			else
-			{
-				size.y = 38;
-			}
-
-			GetComponent<RectTransform>().sizeDelta = size;
-		}
-	}
-
-	public Image image;
+	private bool visited = false;
+	private Image image;
 
 	private void Awake()
 	{
 		image = GetComponent<Image>();
-		image.color = UnvisitedRoomColor;
+		image.color = NotVisitedColor;
+		image.enabled = false;
 	}
 
-	public void CenterRoom(List<MinimapRoom> rooms, Transform minimapRoomPlain)
+	public void UpdateRoom()
 	{
-		foreach (var r in rooms) // Change the color of every room
+		if (RoomManager.PlayerRoom.Info.Coordinates == Coordinates)
 		{
-			if (r.MyRoom.PlayerVisited)
+			visited = true;
+			image.color = CurrentColor;
+			Reveal();
+		}
+		else if (visited)
+			image.color = VisitedColor;
+		else
+			image.color = NotVisitedColor;
+	}
+
+	private void Reveal()
+	{
+		// For every neighbour of the room for this minimapRoom
+		// Get the minimapRoom for that room (not confusing at all!)'
+		// Then just enable the Image component of that room
+
+		image.enabled = true;
+		foreach (var roomArray in RoomManager.GetRoom_ByCoordinates(Coordinates).Info.Neighbours.Values)
+		{
+			foreach (var room in roomArray)
 			{
-				r.image.color = VisitedRoomColor;
-			}
-			else
-			{
-				r.image.color = UnvisitedRoomColor;
+				var mR = MinimapController.GetMinimapRoom(room.Coordinates);
+				if (mR != null)
+					MinimapController.GetMinimapRoom(room.Coordinates).image.enabled = true;
 			}
 		}
-		image.color = CurrentRoomColor; // Change color of current room
-
-		minimapRoomPlain.localPosition = new Vector3(-transform.localPosition.x, -transform.localPosition.y, 0); // Change position of the rooms plain
 	}
 }

@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[SelectionBase]
 public class PlayerController : MonoBehaviour, IEntity
 {
 	// Every mid-game change-able property
+	public bool IsFrozen { get; set; } = false;
+
 	#region Stats
 	[Header("Stats")]
 	[SerializeField] private string _firstName;
@@ -72,8 +75,8 @@ public class PlayerController : MonoBehaviour, IEntity
 	#endregion
 
 	// Every property that will not change
-	#region Static Entity Information
-	[Header("Static Information")]
+	#region Constant Entity Information
+	[Header("Constant Information")]
 	[SerializeField] private Transform _body;
 	public Transform Body
 	{
@@ -87,8 +90,6 @@ public class PlayerController : MonoBehaviour, IEntity
 		set { _legs = value; }
 	}
 	#endregion
-
-	public static Room CurrentRoom { get; set; } // The room the player is in right now
 
 	[Header("Other")]
 	public Animator animator; // Animations controller

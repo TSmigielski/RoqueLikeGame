@@ -110,6 +110,6 @@ public class InputManager : MonoBehaviour, IEntityControls
 
 	private void OnMinimapToggle(InputAction.CallbackContext ctx)
 	{
-		MinimapController.Instance.ToggleMinimap();
+		//MinimapController.Instance.ToggleMinimap();
 	}
 }

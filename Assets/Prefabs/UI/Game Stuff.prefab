@@ -176,8 +176,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 751e36dba89864146b8ebfb4fb8207f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomPrefab: {fileID: 7488745413419171230, guid: f847e053b868ba547868eedb4c60d97b, type: 3}
-  minimapPlain: {fileID: 6666180628456117901}
+  minimapRoomPrefab: {fileID: 7488745413419171230, guid: f847e053b868ba547868eedb4c60d97b, type: 3}
+  minimapRoomsParent: {fileID: 6666180628456117901}
+  notVisitedRoomColor: {r: 0.50980395, g: 0.50980395, b: 0.50980395, a: 0.50980395}
+  visitedRoomColor: {r: 0.745283, g: 0.4806266, b: 0.376157, a: 0.50980395}
+  currentRoomColor: {r: 1, g: 1, b: 1, a: 0.50980395}
+  padding: 2
 --- !u!1 &6666180628456117902
 GameObject:
   m_ObjectHideFlags: 0

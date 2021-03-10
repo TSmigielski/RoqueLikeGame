@@ -20,6 +20,9 @@ public class HandleEntityMovement : MonoBehaviour
 
 	void FixedUpdate()
 	{
+		if (myEntity.IsFrozen)
+			return;
+
 		rb.AddForce(myEntityController.WalkVector * (myEntity.Speed * 333) * Time.fixedDeltaTime);
 	}
 

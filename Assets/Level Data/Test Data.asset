@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 33331763b92ef5c44a3049e2b811cbd3, type: 3}
-  m_Name: LevelGenerationData
+  m_Name: Test Data
   m_EditorClassIdentifier: 
-  numberOfCrawlers: 3
-  minimumCrawls: 5
-  maximumCrawls: 8
+  numberOfCrawlers: 5
+  minimumCrawls: 8
+  maximumCrawls: 12
   hasStartingRoom: 1
   staircaseRoomChance: 50
   elevatorRoomChance: 50
   exitRoomChance: 80
-  individualBigRoomChance: 20
-  doubleOverQuadrupleBias: 60
+  individualBigRoomChance: 50
+  doubleOverQuadrupleBias: 50
